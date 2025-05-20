@@ -21,15 +21,26 @@ interface Props {
 }
 
 export default function GameSession({ showXP, session }: Props) {
+  const monster =
+    session.pending[0] ||
+    session.failed[0] ||
+    session.correct[session.correct.length - 1];
+  return (
+    <Quiz
+      key={monster.id}
+      showXP={showXP}
+      session={session}
+      monster={monster}
+    />
+  );
+}
+
+function Quiz({ showXP, session, monster }: Props & { monster: Monster }) {
   const [show, setShow] = useState(false);
 
   const defaultMode = getMode();
   const ttsEnabled = getTTSEnabled();
   const sfxEnabled = getSFXEnabled();
-  const monster =
-    session.pending[0] ||
-    session.failed[0] ||
-    session.correct[session.correct.length - 1];
   const { sentence, meanings } = getCard(monster.id);
 
   const onFailed = () => {
