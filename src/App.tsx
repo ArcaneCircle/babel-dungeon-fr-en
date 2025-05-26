@@ -94,7 +94,11 @@ export default function App() {
     <>
       {modalComp}
       {playing || showingResults ? (
-        <GameSession session={session} showXP={showXP} />
+        <GameSession
+          session={session}
+          showXP={showXP}
+          showingResults={showingResults || false}
+        />
       ) : (
         player && (
           <Home

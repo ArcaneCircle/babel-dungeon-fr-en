@@ -16,11 +16,16 @@ import PixelatedImgIcon from "~/components/icons/PixelatedImgIcon";
 import checkmarkURL from "@img/checkmark.png";
 
 interface Props {
+  showingResults: boolean;
   showXP: boolean;
   session: Session;
 }
 
-export default function GameSession({ showXP, session }: Props) {
+export default function GameSession({
+  showingResults,
+  showXP,
+  session,
+}: Props) {
   const monster =
     session.pending[0] ||
     session.failed[0] ||
@@ -28,6 +33,7 @@ export default function GameSession({ showXP, session }: Props) {
   return (
     <Quiz
       key={monster.id}
+      showingResults={showingResults}
       showXP={showXP}
       session={session}
       monster={monster}
@@ -35,8 +41,17 @@ export default function GameSession({ showXP, session }: Props) {
   );
 }
 
-function Quiz({ showXP, session, monster }: Props & { monster: Monster }) {
+function Quiz({
+  showingResults,
+  showXP,
+  session,
+  monster,
+}: Props & { monster: Monster }) {
   const [show, setShow] = useState(false);
+
+  if (showingResults) {
+    monster = { ...monster, streak: monster.streak - 1 };
+  }
 
   const defaultMode = getMode();
   const ttsEnabled = getTTSEnabled();
@@ -44,12 +59,12 @@ function Quiz({ showXP, session, monster }: Props & { monster: Monster }) {
   const { sentence, meanings } = getCard(monster.id);
 
   const onFailed = () => {
-    if (sfxEnabled) errorSfx.play();
+    if (sfxEnabled && !(ttsEnabled && defaultMode)) errorSfx.play();
     setShow(false);
     sendMonsterUpdate(monster, false);
   };
   const onCorrect = () => {
-    if (sfxEnabled) successSfx.play();
+    if (sfxEnabled && !(ttsEnabled && defaultMode)) successSfx.play();
     setShow(false);
     sendMonsterUpdate(monster, true);
   };
@@ -73,7 +88,7 @@ function Quiz({ showXP, session, monster }: Props & { monster: Monster }) {
   const meaningsComp = <Meanings key={monster.id} meanings={meanings} />;
 
   useEffect(() => {
-    if (ttsEnabled && defaultMode) tts(sentence);
+    if (ttsEnabled && defaultMode && !showingResults) tts(sentence);
   }, [monster]);
 
   const sentenceSize = sentence.length > 80 ? "0.9em" : undefined;
