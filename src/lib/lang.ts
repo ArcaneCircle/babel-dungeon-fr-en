@@ -1,7 +1,5 @@
 export const LANG1_CODE = "de",
-  LANG2_CODE = "en",
-  LANG1_FLAG = "🇩🇪",
-  LANG2_FLAG = "🇬🇧";
+  LANG2_CODE = "en";
 
 export const translations = {
   Continue: undefined,
@@ -66,6 +64,8 @@ export const translations = {
   Credits: undefined,
   "[ ON]": undefined,
   "[OFF]": undefined,
+  "[EASY]": undefined,
+  "[HARD]": undefined,
 
   ERROR: undefined,
   "Can't import backup, it is not compatible with your version of the game":
