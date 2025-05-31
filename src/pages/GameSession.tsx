@@ -49,10 +49,6 @@ function Quiz({
 }: Props & { monster: Monster }) {
   const [show, setShow] = useState(false);
 
-  if (showingResults) {
-    monster = { ...monster, streak: monster.streak - 1 };
-  }
-
   const defaultMode = getMode();
   const ttsEnabled = getTTSEnabled();
   const sfxEnabled = getSFXEnabled();
