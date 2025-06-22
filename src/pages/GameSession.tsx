@@ -126,7 +126,9 @@ function Quiz({
             {defaultMode ? (
               meaningsComp
             ) : (
-              <div style={{ fontSize: sentenceSize }}>{sentence}</div>
+              <div className="selectable" style={{ fontSize: sentenceSize }}>
+                {sentence}
+              </div>
             )}
           </>
         )}
