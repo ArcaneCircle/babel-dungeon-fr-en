@@ -69,6 +69,7 @@ function Quiz({
   const { sentence, meanings } = getCard(monster.id);
 
   const onFailed = useCallback(() => {
+    setShow(false);
     const ttsWillSpeak = ttsEnabled && defaultMode;
     if (sfxEnabled && !ttsWillSpeak) errorSfx.play();
     sendMonsterUpdate(monster, false);
