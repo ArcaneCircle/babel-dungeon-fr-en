@@ -1,6 +1,8 @@
-# Babel Dungeon (🇩🇪/🇬🇧)
+# Babel Dungeon
 
-A gamified tool for German/English vocabulary learning
+A gamified tool for vocabulary learning.
+This is the base/common shared code between the specific
+language pairs repositories.
 
 ## Contributing
 
@@ -16,6 +18,14 @@ pnpm i
 
 ```
 pnpm check
+```
+
+### Generate sentences
+
+To generate the list of sentences from the raw .tsv data file:
+
+```
+pnpm generate
 ```
 
 ### Testing the app in the browser
