@@ -277,7 +277,7 @@ async function processUpdate(update: ReceivedStatusUpdate<Payload>) {
       case MONSTER_UPDATE_CMD: {
         const session = getSession();
         if (session && payload.sessionId === session.start) {
-          const findMon = (c) => c.id === monster.id;
+          const findMon = (m: Monster) => m.id === payload.monster.id;
           // hack for iOS bug: updates get processed twice
           if (
             session.correct.findIndex(findMon) === -1 &&
