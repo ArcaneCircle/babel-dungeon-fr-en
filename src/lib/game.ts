@@ -277,9 +277,16 @@ async function processUpdate(update: ReceivedStatusUpdate<Payload>) {
       case MONSTER_UPDATE_CMD: {
         const session = getSession();
         if (session && payload.sessionId === session.start) {
-          updateMonster(payload.monster, session);
-          if (payload.xp) session.xp += payload.xp;
-          setSession(session);
+          const findMon = (c) => c.id === monster.id;
+          // hack for iOS bug: updates get processed twice
+          if (
+            session.correct.findIndex(findMon) === -1 &&
+            session.failed.findIndex(findMon) === -1
+          ) {
+            updateMonster(payload.monster, session);
+            if (payload.xp) session.xp += payload.xp;
+            setSession(session);
+          }
           setSessionState(session);
         }
         break;
