@@ -68,6 +68,10 @@ function Quiz({
   const sfxEnabled = getSFXEnabled();
   const { sentence, meanings } = getCard(monster.id);
 
+  useEffect(() => {
+    if (ttsEnabled && defaultMode && !showingResults) tts(sentence);
+  }, [monster]);
+
   const onFailed = useCallback(() => {
     setShow(false);
     const ttsWillSpeak = ttsEnabled && defaultMode;
@@ -96,10 +100,6 @@ function Quiz({
     () => <Meanings key={monster.id} meanings={meanings} />,
     [monster.id],
   );
-
-  useEffect(() => {
-    if (ttsEnabled && defaultMode && !showingResults) tts(sentence);
-  }, [monster]);
 
   const sentenceSize = sentence.length > 80 ? "0.9em" : undefined;
 
