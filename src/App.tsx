@@ -36,59 +36,39 @@ export default function App() {
 
   if (modal === null) {
   } else if (modal.type === "levelUp") {
-    modalComp = useMemo(() => {
-      return (
-        <LevelUpModal
-          level={modal.newLevel}
-          energy={modal.newEnergy}
-          isOpen={true}
-          onClose={onClose}
-        />
-      );
-    }, [modal, onClose]);
+    modalComp = (
+      <LevelUpModal
+        level={modal.newLevel}
+        energy={modal.newEnergy}
+        isOpen={true}
+        onClose={onClose}
+      />
+    );
   } else if (modal.type === "results") {
-    modalComp = useMemo(
-      () => (
-        <ResultsModal
-          isOpen={true}
-          onClose={() => setModal(modal.next)}
-          time={modal.time}
-          xp={modal.xp}
-          accuracy={modal.accuracy}
-        />
-      ),
-      [modal],
+    modalComp = (
+      <ResultsModal
+        isOpen={true}
+        onClose={() => setModal(modal.next)}
+        time={modal.time}
+        xp={modal.xp}
+        accuracy={modal.accuracy}
+      />
     );
   } else if (modal.type === "noEnergy") {
-    modalComp = useMemo(
-      () => <NoEnergyModal isOpen={true} onClose={onClose} />,
-      [onClose],
-    );
+    modalComp = <NoEnergyModal isOpen={true} onClose={onClose} />;
   } else if (modal.type === "invalidBackup") {
-    modalComp = useMemo(
-      () => <InvalidBackupModal isOpen={true} onClose={onClose} />,
-      [onClose],
-    );
+    modalComp = <InvalidBackupModal isOpen={true} onClose={onClose} />;
   } else if (modal.type === "intro") {
-    modalComp = useMemo(
-      () => <IntroModal isOpen={true} onClose={onClose} />,
-      [onClose],
-    );
+    modalComp = <IntroModal isOpen={true} onClose={onClose} />;
   } else if (modal.type === "credits") {
-    modalComp = useMemo(
-      () => <CreditsModal isOpen={true} onClose={onClose} />,
-      [onClose],
-    );
+    modalComp = <CreditsModal isOpen={true} onClose={onClose} />;
   } else if (modal.type === "settings") {
-    modalComp = useMemo(
-      () => (
-        <SettingsModal
-          isOpen={true}
-          onClose={onClose}
-          onShowCredits={() => setModal({ type: "credits" })}
-        />
-      ),
-      [onClose],
+    modalComp = (
+      <SettingsModal
+        isOpen={true}
+        onClose={onClose}
+        onShowCredits={() => setModal({ type: "credits" })}
+      />
     );
   }
   const playing = session && session.pending.length + session.failed.length;
@@ -110,28 +90,21 @@ export default function App() {
   return (
     <>
       {modalComp}
-      {playing || showingResults
-        ? useMemo(
-            () => (
-              <GameSession
-                session={session}
-                showXP={showXP}
-                showingResults={showingResults}
-              />
-            ),
-            [session, showXP, showingResults],
-          )
-        : player &&
-          useMemo(
-            () => (
-              <Home
-                player={player}
-                onShowSettings={onShowSettings}
-                onPlay={onPlay}
-              />
-            ),
-            [player, onShowSettings, onPlay],
-          )}
+      {playing || showingResults ? (
+        <GameSession
+          session={session}
+          showXP={showXP}
+          showingResults={showingResults}
+        />
+      ) : (
+        player && (
+          <Home
+            player={player}
+            onShowSettings={onShowSettings}
+            onPlay={onPlay}
+          />
+        )
+      )}
     </>
   );
 }
