@@ -1,5 +1,5 @@
-import PixelCheckSolid from "~icons/pixel/check-solid";
-import PixelTimesSolid from "~icons/pixel/times-solid";
+import PixelThumbsupSolid from "~icons/pixel/thumbsup-solid";
+import PixelThumbsdownSolid from "~icons/pixel/thumbsdown-solid";
 import PixelFaceThinkingSolid from "~icons/pixel/face-thinking-solid";
 
 import { MAIN_COLOR, RED } from "~/lib/constants";
@@ -37,13 +37,13 @@ export default function StatusBar({ showXP, session, ...props }: Props) {
           </AlignedSpan>
         )}
         <AlignedSpan>
-          <PixelCheckSolid
+          <PixelThumbsupSolid
             style={{ color: MAIN_COLOR, marginRight: "0.2em" }}
           />
           {session.correct.length}
         </AlignedSpan>
         <AlignedSpan>
-          <PixelTimesSolid style={{ color: RED, marginRight: "0.2em" }} />
+          <PixelThumbsdownSolid style={{ color: RED, marginRight: "0.2em" }} />
           {session.failed.length}
         </AlignedSpan>
         <AlignedSpan>
