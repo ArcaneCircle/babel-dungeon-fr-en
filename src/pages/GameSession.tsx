@@ -1,4 +1,6 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
+import PixelCheckSolid from "~icons/pixel/check-solid";
+import PixelTimesSolid from "~icons/pixel/times-solid";
 
 import { MAIN_COLOR, RED } from "~/lib/constants";
 import { _ } from "~/lib/lang";
@@ -10,10 +12,6 @@ import { tts } from "~/lib/tts";
 import MonsterCard from "~/components/MonsterCard";
 import Meanings from "~/components/Meanings";
 import StatusBar from "~/components/StatusBar";
-import TextIcon from "~/components/icons/TextIcon";
-import PixelatedImgIcon from "~/components/icons/PixelatedImgIcon";
-
-import checkmarkURL from "@img/checkmark.png";
 
 const baseBtn = {
   width: "50%",
@@ -152,16 +150,13 @@ function Quiz({
           <>
             <p style={{ fontSize: "0.8em" }}>{_("Did you know it?")}</p>
             <button style={{ ...baseBtn, background: RED }} onClick={onFailed}>
-              <TextIcon text="X" />
+              <PixelTimesSolid />
             </button>
             <button
               style={{ ...baseBtn, background: MAIN_COLOR }}
               onClick={onCorrect}
             >
-              <PixelatedImgIcon
-                src={checkmarkURL}
-                style={{ height: "1em", width: "auto" }}
-              />
+              <PixelCheckSolid />
             </button>
           </>
         ) : (

@@ -1,6 +1,11 @@
+import PixelPlaySolid from "~icons/pixel/play-solid";
+import PixelCrownSolid from "~icons/pixel/crown-solid";
+import PixelFireSolid from "~icons/pixel/fire-solid";
+
 import { MAIN_COLOR, RED, MAX_LEVEL } from "~/lib/constants";
 import { _ } from "~/lib/lang";
 import { getLastPlayed } from "~/lib/storage";
+
 import PixelatedProgressBar from "~/components/PixelatedProgressBar";
 import StatSection from "~/components/StatSection";
 import TitleBar from "~/components/TitleBar";
@@ -23,8 +28,10 @@ interface Props {
 export default function Home({ onPlay, player, onShowSettings }: Props) {
   const today = new Date().setHours(0, 0, 0, 0);
   const lastPlayed = getLastPlayed();
-  const streakColor = lastPlayed === today ? MAIN_COLOR : undefined;
-  const streakSize = player.streak > 9999 ? "0.9em" : undefined;
+  const epicStreak = player.streak >= 7;
+  const streakColor =
+    lastPlayed === today ? (epicStreak ? "#efb60e" : MAIN_COLOR) : "#a8a8a8";
+  const streakSize = player.streak > 99 ? "0.9em" : undefined;
   const toReviewColor = player.toReview ? undefined : MAIN_COLOR;
   const energyColor = player.energy < 10 ? RED : undefined;
 
@@ -82,6 +89,7 @@ export default function Home({ onPlay, player, onShowSettings }: Props) {
               numberColor={streakColor}
               unit={_(player.streak === 1 ? "day" : "days")}
               style={{ paddingBottom: "1em" }}
+              icon={<PixelFireSolid style={{ color: streakColor }} />}
             />
             <StatSection
               title={_("PLAYED")}
@@ -102,7 +110,9 @@ export default function Home({ onPlay, player, onShowSettings }: Props) {
             <div style={{ paddingBottom: "0.3em" }}>
               {seenProgress}/100
               <span style={{ display: "inline", float: "right" }}>
-                {_("RANK:")}
+                <PixelCrownSolid
+                  style={{ color: MAIN_COLOR, marginRight: "0.2em" }}
+                />
                 <span style={{ color: seenRankColor }}>
                   {Math.floor(player.seen / 100)}
                 </span>
@@ -122,7 +132,9 @@ export default function Home({ onPlay, player, onShowSettings }: Props) {
             <div style={{ paddingBottom: "0.3em" }}>
               {masteredProgress}/100
               <span style={{ display: "inline", float: "right" }}>
-                {_("RANK:")}
+                <PixelCrownSolid
+                  style={{ color: "#efb60e", marginRight: "0.2em" }}
+                />
                 <span style={{ color: masteredRankColor }}>
                   {Math.floor(player.mastered / 100)}
                 </span>
@@ -148,7 +160,7 @@ export default function Home({ onPlay, player, onShowSettings }: Props) {
           }}
           onClick={onPlay}
         >
-          {_("Play")}
+          <PixelPlaySolid />
         </MenuButton>
       </div>
     </>

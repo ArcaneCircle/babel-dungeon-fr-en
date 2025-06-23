@@ -1,11 +1,11 @@
-import { RED } from "~/lib/constants";
+import PixelCheckSolid from "~icons/pixel/check-solid";
+import PixelTimesSolid from "~icons/pixel/times-solid";
+import PixelFaceThinkingSolid from "~icons/pixel/face-thinking-solid";
+
+import { MAIN_COLOR, RED } from "~/lib/constants";
 import { _ } from "~/lib/lang";
 
 import BasicProgressBar from "./BasicProgressBar";
-import TextIcon from "~/components/icons/TextIcon";
-import PixelatedImgIcon from "~/components/icons/PixelatedImgIcon";
-
-import checkmarkGreenURL from "@img/checkmark-green.png";
 
 interface Props {
   showXP: boolean;
@@ -37,27 +37,18 @@ export default function StatusBar({ showXP, session, ...props }: Props) {
           </AlignedSpan>
         )}
         <AlignedSpan>
-          <PixelatedImgIcon
-            src={checkmarkGreenURL}
-            style={{ height: "1.3em", width: "auto", marginRight: "0.2em" }}
+          <PixelCheckSolid
+            style={{ color: MAIN_COLOR, marginRight: "0.2em" }}
           />
           {session.correct.length}
         </AlignedSpan>
         <AlignedSpan>
-          <TextIcon
-            style={{ color: RED, fontSize: "1.1em", marginRight: "0.2em" }}
-            text="X"
-          />
+          <PixelTimesSolid style={{ color: RED, marginRight: "0.2em" }} />
           {session.failed.length}
         </AlignedSpan>
         <AlignedSpan>
-          <TextIcon
-            style={{
-              color: "#efb60e",
-              fontSize: "1.1em",
-              marginRight: "0.2em",
-            }}
-            text="?"
+          <PixelFaceThinkingSolid
+            style={{ color: "#efb60e", marginRight: "0.2em" }}
           />
           {session.pending.length}
         </AlignedSpan>

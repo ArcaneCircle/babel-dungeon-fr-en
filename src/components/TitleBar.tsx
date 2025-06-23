@@ -1,4 +1,4 @@
-import TextIcon from "~/components/icons/TextIcon";
+import PixelCogSolid from "~icons/pixel/cog-solid";
 
 export default function TitleBar({
   onShowSettings,
@@ -21,7 +21,7 @@ export default function TitleBar({
   return (
     <div style={containerStyle}>
       <div style={{ paddingLeft: "1em" }}>Babel Dungeon</div>
-      <TextIcon text="Ξ" style={settingsStyle} onClick={onShowSettings} />
+      <PixelCogSolid style={settingsStyle} onClick={onShowSettings} />
     </div>
   );
 }

@@ -70,6 +70,8 @@ git push origin v1.0.1
 
 - Random monster generator code taken from https://github.com/fabianobizarro/react-monsterid (MIT license)
 
+- UI Icons from "Pixel Icon" by [HackerNoon](https://github.com/hackernoon/pixel-icon-library) ([CC BY 4.0](https://creativecommons.org/licenses/by/4.0/))
+
 - Background music is "Cave.mp3" from https://opengameart.org/content/cc0-scraps (CC0 - public domain)
 
 - Level-up SFX is "VictorySmall.wav" from https://opengameart.org/content/8-bit-sound-fx (CC0 - public domain)

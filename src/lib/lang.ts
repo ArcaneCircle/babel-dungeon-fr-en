@@ -16,9 +16,7 @@ const translations = {
   today: undefined,
   REVIEW: undefined,
   "Discovered:": undefined,
-  "RANK:": undefined,
   "Mastered:": undefined,
-  Play: undefined,
 
   "+{{x}}xp": undefined,
   "lvl.{{l}}": undefined,
@@ -29,6 +27,7 @@ const translations = {
   CREDITS: undefined,
   "Developer: Asiel Diaz Benitez": undefined,
   "Sentences collection: tatoeba.org": undefined,
+  'UI Icons: "Pixel Icon" by HackerNoon': undefined,
   'Music: "Cave" by celestialghost8': undefined,
   "Sound effects by celestialghost8, Fupi and Dizzy Crow": undefined,
   "More details at: github.com/ArcaneCircle/babel-dungeon-{{l1}}-{{l2}}":

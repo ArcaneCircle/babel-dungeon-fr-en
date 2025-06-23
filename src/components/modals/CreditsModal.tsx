@@ -19,7 +19,8 @@ export default function CreditsModal(props: Props) {
         <div style={{ fontSize: "0.9em" }}>
           <p>{_("Developer: Asiel Diaz Benitez")}</p>
           <p>{_("Sentences collection: tatoeba.org")}</p>
-          <p>{_(`Music: "Cave" by celestialghost8`)}</p>
+          <p>{_('UI Icons: "Pixel Icon" by HackerNoon')}</p>
+          <p>{_('Music: "Cave" by celestialghost8')}</p>
           <p>{_("Sound effects by celestialghost8, Fupi and Dizzy Crow")}</p>
           <p>
             {_(
