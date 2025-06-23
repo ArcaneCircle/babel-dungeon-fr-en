@@ -70,6 +70,8 @@ function Quiz({
     if (ttsEnabled && defaultMode && !showingResults) tts(sentence);
   }, [monster]);
 
+  const pendingCount = session.failed.length + session.pending.length;
+
   const onFailed = useCallback(() => {
     setShow(false);
     const ttsWillSpeak = ttsEnabled && defaultMode;
@@ -77,14 +79,12 @@ function Quiz({
     sendMonsterUpdate(monster, false);
   }, [monster, ttsEnabled, sfxEnabled, defaultMode]);
   const onCorrect = useCallback(() => {
-    const sessionFinished =
-      session.failed.length + session.pending.length === 1;
     const ttsWillSpeak = ttsEnabled && defaultMode;
-    if (sfxEnabled && (!ttsWillSpeak || sessionFinished)) {
+    if (sfxEnabled && (!ttsWillSpeak || pendingCount === 1)) {
       successSfx.play();
     }
     sendMonsterUpdate(monster, true);
-  }, [monster, ttsEnabled, sfxEnabled, defaultMode]);
+  }, [monster, ttsEnabled, sfxEnabled, defaultMode, pendingCount]);
   const onShow = useCallback(() => {
     if (ttsEnabled && !defaultMode) {
       tts(sentence);
@@ -121,57 +121,69 @@ function Quiz({
   return (
     <div style={{ textAlign: "center" }}>
       {statusBarM}
-      <div style={{ padding: "0.5em 0.3em 0.3em 0.3em", marginBottom: "6em" }}>
-        {monsterM}
-        {show && (
-          <>
-            <div style={{ paddingTop: "0.5em", paddingBottom: "0.5em" }}>
-              <span style={{ fontSize: "1.5em" }}>↓</span>
-            </div>
-            {defaultMode ? (
-              meaningsComp
-            ) : (
-              <div className="selectable" style={{ fontSize: sentenceSize }}>
-                {sentence}
-              </div>
+      {pendingCount > 0 && (
+        <>
+          <div
+            style={{ padding: "0.5em 0.3em 0.3em 0.3em", marginBottom: "6em" }}
+          >
+            {monsterM}
+            {show && (
+              <>
+                <div style={{ paddingTop: "0.5em", paddingBottom: "0.5em" }}>
+                  <span style={{ fontSize: "1.5em" }}>↓</span>
+                </div>
+                {defaultMode ? (
+                  meaningsComp
+                ) : (
+                  <div
+                    className="selectable"
+                    style={{ fontSize: sentenceSize }}
+                  >
+                    {sentence}
+                  </div>
+                )}
+              </>
             )}
-          </>
-        )}
-      </div>
-      <div
-        style={{
-          position: "fixed",
-          bottom: "0",
-          width: "100%",
-          backgroundColor: "black",
-        }}
-      >
-        {show ? (
-          <>
-            <p style={{ fontSize: "0.8em" }}>{_("Did you know it?")}</p>
-            <button style={{ ...baseBtn, background: RED }} onClick={onFailed}>
-              <PixelTimesSolid />
-            </button>
-            <button
-              style={{ ...baseBtn, background: MAIN_COLOR }}
-              onClick={onCorrect}
-            >
-              <PixelCheckSolid />
-            </button>
-          </>
-        ) : (
-          <button
-            onClick={onShow}
+          </div>
+          <div
             style={{
-              ...baseBtn,
-              background: "#32526d",
+              position: "fixed",
+              bottom: "0",
               width: "100%",
+              backgroundColor: "black",
             }}
           >
-            {_("Reveal")}
-          </button>
-        )}
-      </div>
+            {show ? (
+              <>
+                <p style={{ fontSize: "0.8em" }}>{_("Did you know it?")}</p>
+                <button
+                  style={{ ...baseBtn, background: RED }}
+                  onClick={onFailed}
+                >
+                  <PixelTimesSolid />
+                </button>
+                <button
+                  style={{ ...baseBtn, background: MAIN_COLOR }}
+                  onClick={onCorrect}
+                >
+                  <PixelCheckSolid />
+                </button>
+              </>
+            ) : (
+              <button
+                onClick={onShow}
+                style={{
+                  ...baseBtn,
+                  background: "#32526d",
+                  width: "100%",
+                }}
+              >
+                {_("Reveal")}
+              </button>
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 }
