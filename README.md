@@ -4,6 +4,15 @@ A gamified tool for vocabulary learning.
 This is the base/common shared code between the specific
 language pairs repositories.
 
+## Creating new flavor
+
+- update `public/manifest.toml` and `public/icon.png`
+- replace `test-data.tsv` with the new game data
+- update `LANG1_CODE` and `LANG2_CODE` in `src/lib/constants.ts`
+- if necessary add localization for the interface strings at
+  `src/lib/langs` and update `src/lib/i18n.ts` accordingly.
+- update `README.md`
+
 ## Contributing
 
 ### Installing Dependencies

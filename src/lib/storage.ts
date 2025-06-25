@@ -1,6 +1,6 @@
 import Dexie, { type EntityTable } from "dexie";
 
-import { LANG1_CODE, LANG2_CODE } from "~/lib/lang";
+import { LANG1_CODE, LANG2_CODE } from "~/lib/constants";
 
 const VERSION = 3;
 

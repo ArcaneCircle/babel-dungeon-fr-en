@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { _ } from "~/lib/lang";
+import { _ } from "~/lib/i18n";
 import { importGame } from "~/lib/game";
 import {
   getSFXEnabled,

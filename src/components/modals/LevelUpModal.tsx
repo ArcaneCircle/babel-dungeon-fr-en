@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import PartyPopper from "~icons/custom/party-popper";
 
-import { _ } from "~/lib/lang";
+import { _ } from "~/lib/i18n";
 import { levelUpSfx, successSfx } from "~/lib/sounds";
 import { getSFXEnabled } from "~/lib/storage";
 

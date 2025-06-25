@@ -1,5 +1,5 @@
 import { MAIN_COLOR } from "~/lib/constants";
-import { _ } from "~/lib/lang";
+import { _ } from "~/lib/i18n";
 
 import MenuButton from "~/components/MenuButton";
 import Modal from "./Modal";

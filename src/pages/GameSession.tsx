@@ -3,7 +3,7 @@ import PixelThumbsupSolid from "~icons/pixel/thumbsup-solid";
 import PixelThumbsdownSolid from "~icons/pixel/thumbsdown-solid";
 
 import { MAIN_COLOR, RED } from "~/lib/constants";
-import { _ } from "~/lib/lang";
+import { _ } from "~/lib/i18n";
 import { getMode, getTTSEnabled, getSFXEnabled } from "~/lib/storage";
 import { successSfx, errorSfx, clickSfx } from "~/lib/sounds";
 import { getCard, sendMonsterUpdate } from "~/lib/game";

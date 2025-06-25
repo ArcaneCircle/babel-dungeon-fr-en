@@ -1,4 +1,5 @@
-import { _, LANG1_CODE, LANG2_CODE } from "~/lib/lang";
+import { LANG1_CODE, LANG2_CODE } from "~/lib/constants";
+import { _ } from "~/lib/i18n";
 
 import ConfirmModal from "./ConfirmModal";
 
