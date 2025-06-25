@@ -78,7 +78,6 @@ declare interface Backup {
   energyTimestamp: string;
   studiedToday: string;
   lastPlayed: string;
-  music: string;
   sfx: string;
   tts: string;
 }

@@ -3,8 +3,6 @@ import { useState } from "react";
 import { _ } from "~/lib/lang";
 import { importGame } from "~/lib/game";
 import {
-  getMusicEnabled,
-  setMusicEnabled,
   getSFXEnabled,
   setSFXEnabled,
   getTTSEnabled,
@@ -14,7 +12,6 @@ import {
   getShowIntro,
   exportBackup,
 } from "~/lib/storage";
-import { backgroundMusic } from "~/lib/sounds";
 
 import MenuPreference from "~/components/MenuPreference";
 import MenuButton from "~/components/MenuButton";
@@ -36,23 +33,10 @@ export default function SettingsModal({
   onClose,
   ...props
 }: Props) {
-  const [musicEnabled, setMusic] = useState(getMusicEnabled());
   const [sfxEnabled, setSFX] = useState(getSFXEnabled());
   const [ttsEnabled, setTTS] = useState(getTTSEnabled());
   const [defaultMode, setModeState] = useState(getMode());
 
-  const toggleMusic = () => {
-    setMusic((enabled) => {
-      enabled = !enabled;
-      if (enabled) {
-        backgroundMusic.play();
-      } else {
-        backgroundMusic.stop();
-      }
-      setMusicEnabled(enabled);
-      return enabled;
-    });
-  };
   const toggleSFX = () => {
     setSFX((enabled) => {
       enabled = !enabled;
@@ -96,7 +80,6 @@ export default function SettingsModal({
     onClose();
   };
 
-  const musicState = _(musicEnabled ? "[ ON]" : "[OFF]");
   const sfxState = _(sfxEnabled ? "[ ON]" : "[OFF]");
   const ttsState = _(ttsEnabled ? "[ ON]" : "[OFF]");
   const modeState = _(defaultMode ? "[EASY]" : "[HARD]");
@@ -108,13 +91,6 @@ export default function SettingsModal({
           {_("SETTINGS")}
           <hr />
         </div>
-        <MenuItem>
-          <MenuPreference
-            name={_("Music")}
-            state={musicState}
-            onClick={toggleMusic}
-          />
-        </MenuItem>
         <MenuItem>
           <MenuPreference
             name={_("SFX")}

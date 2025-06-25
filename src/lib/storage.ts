@@ -30,7 +30,6 @@ export async function exportBackup(): Promise<Backup> {
     studiedToday: localStorage.studiedToday,
     lastPlayed: localStorage.lastPlayed,
     // UI settings
-    music: localStorage.music,
     sfx: localStorage.sfx,
     tts: localStorage.tts,
   };
@@ -55,7 +54,6 @@ export async function importBackup(backup: Backup) {
   localStorage.studiedToday = backup.studiedToday;
   localStorage.lastPlayed = backup.lastPlayed;
   // UI settings
-  localStorage.music = backup.music || "";
   localStorage.sfx = backup.sfx || "";
   localStorage.tts = backup.tts || "";
 }
@@ -91,14 +89,6 @@ export function getShowIntro(): number {
 
 export function setShowIntro() {
   localStorage.showIntro = 0;
-}
-
-export function getMusicEnabled(): boolean {
-  return parseInt(localStorage.music || "1") === 1;
-}
-
-export function setMusicEnabled(enabled: boolean) {
-  localStorage.music = enabled ? 1 : 0;
 }
 
 export function getSFXEnabled(): boolean {

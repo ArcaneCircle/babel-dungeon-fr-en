@@ -28,7 +28,6 @@ const translations = {
   "Developer: Asiel Diaz Benitez": undefined,
   "Sentences collection: tatoeba.org": undefined,
   'UI Icons: "Pixel Icon" by HackerNoon': undefined,
-  'Music: "Cave" by celestialghost8': undefined,
   "Sound effects by celestialghost8, Fupi and Dizzy Crow": undefined,
   "More details at: github.com/ArcaneCircle/babel-dungeon-{{l1}}-{{l2}}":
     undefined,
@@ -56,7 +55,6 @@ const translations = {
   "Time:": undefined,
 
   SETTINGS: undefined,
-  Music: undefined,
   SFX: undefined,
   TTS: undefined,
   Mode: undefined,
