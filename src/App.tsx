@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 
 import { MAX_LEVEL } from "~/lib/constants";
-import { initGame, startNewGame } from "~/lib/game";
+import { initGame } from "~/lib/game";
 
 import Home from "~/pages/Home";
 import GameSession from "~/pages/GameSession";
@@ -28,7 +28,7 @@ export default function App() {
           showXP={showXP}
         />
       ) : (
-        player && <Home player={player} onPlay={startNewGame} />
+        player && <Home player={player} />
       )}
     </>
   );

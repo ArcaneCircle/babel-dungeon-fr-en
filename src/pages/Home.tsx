@@ -12,6 +12,7 @@ import {
 } from "~/lib/constants";
 import { _ } from "~/lib/i18n";
 import { getLastPlayed, getShowIntro } from "~/lib/storage";
+import { startNewGame } from "~/lib/game";
 
 import { ModalContext } from "~/components/modals/Modal";
 import NoEnergyModal from "~/components/modals/NoEnergyModal";
@@ -30,11 +31,10 @@ const card = {
 };
 
 interface Props {
-  onPlay: () => void;
   player: Player;
 }
 
-export default function Home({ onPlay, player }: Props) {
+export default function Home({ player }: Props) {
   const [modal, setModal] = useState(
     (getShowIntro() ? "intro" : null) as "intro" | "noEnergy" | null,
   );
@@ -61,9 +61,9 @@ export default function Home({ onPlay, player }: Props) {
   const masteredProgress = maxMasteredRank ? 100 : player.mastered % 100;
   const masteredRankColor = maxMasteredRank ? MAIN_COLOR : undefined;
 
-  const onPlayClick = useCallback(() => {
+  const onPlay = useCallback(() => {
     if (player.energy >= PLAY_ENERGY_COST) {
-      onPlay();
+      startNewGame();
     } else {
       setModal("noEnergy");
     }
@@ -179,7 +179,7 @@ export default function Home({ onPlay, player }: Props) {
             padding: "0.6em 0.5em",
             marginTop: "1em",
           }}
-          onClick={onPlayClick}
+          onClick={onPlay}
         >
           <PixelPlaySolid />
         </MenuButton>
