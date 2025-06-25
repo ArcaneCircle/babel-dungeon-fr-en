@@ -296,13 +296,8 @@ async function processUpdate(update: ReceivedStatusUpdate<Payload>) {
         await db.monsters.bulkPut(session.correct);
 
         const { xp, level } = increaseXp(session.xp);
-        const oldLevel = getLevel();
-        if (oldLevel < level) {
-          const newEnergy = getMaxEnergy(level) - getMaxEnergy(oldLevel);
-          if (newEnergy > 0) {
-            const { energy, time } = getEnergy();
-            setEnergy(energy + newEnergy, time);
-          }
+        if (getLevel() < level) {
+          setEnergy(getMaxEnergy(level), Date.now());
         }
         setXp(xp);
         setLevel(level);
