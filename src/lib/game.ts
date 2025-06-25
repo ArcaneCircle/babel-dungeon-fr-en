@@ -416,8 +416,9 @@ function increaseXp(xp: number): { xp: number; level: number } {
 }
 
 function toNextLevelMediumFast(level: number): number {
-  if (level === 1) return 10;
-  if (level === 2) return 24;
+  if (level === 1) return 20;
+  if (level === 2) return 34;
+  if (level === 3) return 47;
   return (level + 1) ** 3 - level ** 3;
 }
 
