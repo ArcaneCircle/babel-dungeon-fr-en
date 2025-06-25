@@ -100,7 +100,7 @@ export function setSFXEnabled(enabled: boolean) {
 }
 
 export function getTTSEnabled(): boolean {
-  return parseInt(localStorage.tts || "0") === 1;
+  return parseInt(localStorage.tts || "1") === 1;
 }
 
 export function setTTSEnabled(enabled: boolean) {
