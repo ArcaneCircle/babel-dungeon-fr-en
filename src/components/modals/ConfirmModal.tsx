@@ -1,18 +1,20 @@
+import { useContext } from "react";
+
 import { MAIN_COLOR } from "~/lib/constants";
 import { _ } from "~/lib/i18n";
 
+import { ModalContext } from "~/components/modals/Modal";
+import { Modal } from "~/components/modals/Modal";
 import MenuButton from "~/components/MenuButton";
-import Modal from "./Modal";
 
 type Props = {
-  onClose: () => void;
-  isOpen: boolean;
   children: React.ReactNode;
 };
 
-export default function ConfirmModal({ onClose, isOpen, children }: Props) {
+export default function ConfirmModal({ children }: Props) {
+  const { setOpen } = useContext(ModalContext);
   return (
-    <Modal isOpen={isOpen}>
+    <Modal>
       <div>{children}</div>
       <MenuButton
         style={{
@@ -20,7 +22,7 @@ export default function ConfirmModal({ onClose, isOpen, children }: Props) {
           background: MAIN_COLOR,
           marginTop: "2em",
         }}
-        onClick={onClose}
+        onClick={() => setOpen(false)}
       >
         {_("Continue")}
       </MenuButton>

@@ -8,8 +8,6 @@ type Props = {
   time: number;
   xp: number;
   accuracy: number;
-  onClose: () => void;
-  isOpen: boolean;
   [key: string]: any;
 };
 

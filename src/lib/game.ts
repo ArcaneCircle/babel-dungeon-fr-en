@@ -22,7 +22,6 @@ import {
   getUnseenIndex,
   setMaxSerial,
   getMaxSerial,
-  getShowIntro,
   setShowIntro,
   getMode,
   setMode,
@@ -40,7 +39,6 @@ const sixMinutes = 6 * 60 * 1000;
 let energyLastCheck = 0;
 let setPlayerState = null as ((player: Player) => void) | null;
 let setSessionState = (_: Session | null) => {};
-let setModalState = (_: ModalPayload | null) => {};
 const queue: ReceivedStatusUpdate<Payload>[] = [];
 const workerLoop = async () => {
   while (queue.length > 0) {
@@ -100,7 +98,7 @@ export async function getPlayer(): Promise<Player> {
   };
 }
 
-export function importGame(backup: Backup) {
+export function importGame(backup: Backup): boolean {
   if (isValidBackup(backup)) {
     const uid = window.webxdc.selfAddr;
     window.webxdc.sendUpdate(
@@ -109,9 +107,9 @@ export function importGame(backup: Backup) {
       },
       "",
     );
-  } else {
-    setModalState({ type: "invalidBackup" });
+    return true;
   }
+  return false;
 }
 
 export function startNewGame() {
@@ -143,8 +141,12 @@ function getResultsModal(
   };
 }
 
-export function sendMonsterUpdate(monster: Monster, correct: boolean) {
+export function sendMonsterUpdate(
+  monster: Monster,
+  correct: boolean,
+): ModalPayload | null {
   monster = { ...monster };
+  let modal = null;
   const now = new Date();
   const level = getLevel();
   monster.seen = now.getTime();
@@ -208,16 +210,14 @@ export function sendMonsterUpdate(monster: Monster, correct: boolean) {
     const { level: newLevel } = increaseXp(session.xp);
     if (level < newLevel) {
       const newEnergy = getMaxEnergy(newLevel) - getMaxEnergy(level);
-      setModalState(
-        getResultsModal(session, monster.seen, {
-          type: "levelUp",
-          newEnergy,
-          newLevel,
-        }),
-      );
+      modal = getResultsModal(session, monster.seen, {
+        type: "levelUp",
+        newEnergy,
+        newLevel,
+      });
       update.info = `${window.webxdc.selfName} reached level ${newLevel} 🎉`;
     } else {
-      setModalState(getResultsModal(session, monster.seen, null));
+      modal = getResultsModal(session, monster.seen, null);
     }
     window.webxdc.sendUpdate(update, "");
   } else {
@@ -232,12 +232,12 @@ export function sendMonsterUpdate(monster: Monster, correct: boolean) {
     } as SendingStatusUpdate<Payload>;
     window.webxdc.sendUpdate(update, "");
   }
+  return modal;
 }
 
 export function initGame(
   sessionHook: (session: Session | null) => void,
   playerHook: (player: Player) => void,
-  modalHook: (modal: ModalPayload | null) => void,
 ) {
   window.webxdc
     .setUpdateListener(
@@ -251,7 +251,6 @@ export function initGame(
           cmd: INIT_CMD,
           sessionHook,
           playerHook,
-          modalHook,
         },
         serial: -1,
         max_serial: 0,
@@ -266,8 +265,6 @@ async function processUpdate(update: ReceivedStatusUpdate<Payload>) {
       case INIT_CMD: {
         setSessionState = payload.sessionHook;
         setPlayerState = payload.playerHook;
-        setModalState = payload.modalHook;
-        setModalState(getShowIntro() ? { type: "intro" } : null);
         setSessionState(getSession());
         setPlayerState(await getPlayer());
         return; // this command is not real update, abort

@@ -9,9 +9,12 @@ import { successSfx, errorSfx, clickSfx } from "~/lib/sounds";
 import { getCard, sendMonsterUpdate } from "~/lib/game";
 import { tts } from "~/lib/tts";
 
+import { ModalContext } from "~/components/modals/Modal";
 import MonsterCard from "~/components/MonsterCard";
 import Meanings from "~/components/Meanings";
 import StatusBar from "~/components/StatusBar";
+import LevelUpModal from "~/components/modals/LevelUpModal";
+import ResultsModal from "~/components/modals/ResultsModal";
 
 const baseBtn = {
   width: "50%",
@@ -28,13 +31,13 @@ const statusBarStyle = {
 };
 
 interface Props {
-  showingResults: boolean;
+  setShowingResults: (showing: boolean) => void;
   showXP: boolean;
   session: Session;
 }
 
 export default function GameSession({
-  showingResults,
+  setShowingResults,
   showXP,
   session,
 }: Props) {
@@ -45,30 +48,33 @@ export default function GameSession({
   return (
     <Quiz
       key={monster.id}
-      showingResults={showingResults}
       showXP={showXP}
       session={session}
       monster={monster}
+      setShowingResults={setShowingResults}
     />
   );
 }
 
 function Quiz({
-  showingResults,
+  setShowingResults,
   showXP,
   session,
   monster,
 }: Props & { monster: Monster }) {
   const [show, setShow] = useState(false);
+  const [modal, setModal] = useState(null as ModalPayload | null);
 
   const defaultMode = getMode();
   const ttsEnabled = getTTSEnabled();
   const sfxEnabled = getSFXEnabled();
   const { sentence, meanings } = getCard(monster.id);
 
+  const showingResults = !!modal;
+
   useEffect(() => {
     if (ttsEnabled && defaultMode && !showingResults) tts(sentence);
-  }, [monster]);
+  }, [monster, showingResults]);
 
   const pendingCount = session.failed.length + session.pending.length;
 
@@ -83,7 +89,9 @@ function Quiz({
     if (sfxEnabled && (!ttsWillSpeak || pendingCount === 1)) {
       successSfx.play();
     }
-    sendMonsterUpdate(monster, true);
+    const mod = sendMonsterUpdate(monster, true);
+    setShowingResults(!!mod);
+    setModal(mod);
   }, [monster, ttsEnabled, sfxEnabled, defaultMode, pendingCount]);
   const onShow = useCallback(() => {
     if (ttsEnabled && !defaultMode) {
@@ -118,72 +126,105 @@ function Quiz({
     [monster.id],
   );
 
+  const setOpen = useCallback(
+    (show: boolean) => {
+      if (show) {
+        setShowingResults(!!modal);
+        setModal(modal);
+      } else if (modal && "next" in modal) {
+        setShowingResults(!!modal.next);
+        setModal(modal.next);
+      } else {
+        setShowingResults(false);
+        setModal(null);
+      }
+    },
+    [modal],
+  );
+
   return (
-    <div style={{ textAlign: "center" }}>
-      {statusBarM}
-      {pendingCount > 0 && (
-        <>
-          <div
-            style={{ padding: "0.5em 0.3em 0.3em 0.3em", marginBottom: "6em" }}
-          >
-            {monsterM}
-            {show && (
-              <>
-                <div style={{ paddingTop: "0.5em", paddingBottom: "0.5em" }}>
-                  <span style={{ fontSize: "1.5em" }}>↓</span>
-                </div>
-                {defaultMode ? (
-                  meaningsComp
-                ) : (
-                  <div
-                    className="selectable"
-                    style={{ fontSize: sentenceSize }}
-                  >
-                    {sentence}
+    <>
+      <ModalContext.Provider value={{ isOpen: !!modal, setOpen }}>
+        {modal === null ? null : modal.type === "levelUp" ? (
+          <LevelUpModal level={modal.newLevel} energy={modal.newEnergy} />
+        ) : modal.type === "results" ? (
+          <ResultsModal
+            time={modal.time}
+            xp={modal.xp}
+            accuracy={modal.accuracy}
+          />
+        ) : null}
+      </ModalContext.Provider>
+
+      <div style={{ textAlign: "center" }}>
+        {statusBarM}
+        {pendingCount > 0 && (
+          <>
+            <div
+              style={{
+                padding: "0.5em 0.3em 0.3em 0.3em",
+                marginBottom: "6em",
+              }}
+            >
+              {monsterM}
+              {show && (
+                <>
+                  <div style={{ paddingTop: "0.5em", paddingBottom: "0.5em" }}>
+                    <span style={{ fontSize: "1.5em" }}>↓</span>
                   </div>
-                )}
-              </>
-            )}
-          </div>
-          <div
-            style={{
-              position: "fixed",
-              bottom: "0",
-              width: "100%",
-              backgroundColor: "black",
-            }}
-          >
-            {show ? (
-              <>
-                <p style={{ fontSize: "0.8em" }}>{_("Did you know it?")}</p>
+                  {defaultMode ? (
+                    meaningsComp
+                  ) : (
+                    <div
+                      className="selectable"
+                      style={{ fontSize: sentenceSize }}
+                    >
+                      {sentence}
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+            <div
+              style={{
+                position: "fixed",
+                bottom: "0",
+                width: "100%",
+                backgroundColor: "black",
+              }}
+            >
+              {show ? (
+                <>
+                  <p style={{ fontSize: "0.8em" }}>{_("Did you know it?")}</p>
+                  <button
+                    style={{ ...baseBtn, background: RED }}
+                    onClick={onFailed}
+                  >
+                    <PixelThumbsdownSolid />
+                  </button>
+                  <button
+                    style={{ ...baseBtn, background: MAIN_COLOR }}
+                    onClick={onCorrect}
+                  >
+                    <PixelThumbsupSolid />
+                  </button>
+                </>
+              ) : (
                 <button
-                  style={{ ...baseBtn, background: RED }}
-                  onClick={onFailed}
+                  onClick={onShow}
+                  style={{
+                    ...baseBtn,
+                    background: "#32526d",
+                    width: "100%",
+                  }}
                 >
-                  <PixelThumbsdownSolid />
+                  {_("Reveal")}
                 </button>
-                <button
-                  style={{ ...baseBtn, background: MAIN_COLOR }}
-                  onClick={onCorrect}
-                >
-                  <PixelThumbsupSolid />
-                </button>
-              </>
-            ) : (
-              <button
-                onClick={onShow}
-                style={{
-                  ...baseBtn,
-                  background: "#32526d",
-                  width: "100%",
-                }}
-              >
-                {_("Reveal")}
-              </button>
-            )}
-          </div>
-        </>
-      )}
-    </div>
+              )}
+            </div>
+          </>
+        )}
+      </div>
+    </>
   );
 }

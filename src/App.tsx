@@ -1,19 +1,10 @@
-import { useState, useCallback, useMemo } from "react";
+import { useState, useMemo } from "react";
 
-import { MAX_LEVEL, PLAY_ENERGY_COST } from "~/lib/constants";
+import { MAX_LEVEL } from "~/lib/constants";
 import { initGame, startNewGame } from "~/lib/game";
-import { getSFXEnabled } from "~/lib/storage";
-import { clickSfx } from "~/lib/sounds";
 
 import Home from "~/pages/Home";
 import GameSession from "~/pages/GameSession";
-import LevelUpModal from "~/components/modals/LevelUpModal";
-import ResultsModal from "~/components/modals/ResultsModal";
-import NoEnergyModal from "~/components/modals/NoEnergyModal";
-import InvalidBackupModal from "~/components/modals/InvalidBackupModal";
-import IntroModal from "~/components/modals/IntroModal";
-import CreditsModal from "~/components/modals/CreditsModal";
-import SettingsModal from "~/components/modals/SettingsModal";
 
 // @ts-ignore
 import "@fontsource/press-start-2p";
@@ -21,89 +12,23 @@ import "./App.css";
 
 export default function App() {
   const [session, setSession] = useState(null as Session | null);
+  const [forceSession, setForceSession] = useState(false);
   const [player, setPlayer] = useState(null as Player | null);
-  const [modal, setModal] = useState(null as ModalPayload | null);
-  useMemo(() => initGame(setSession, setPlayer, setModal), []);
+  useMemo(() => initGame(setSession, setPlayer), []);
 
-  let modalComp = null;
-  const onClose = useCallback(() => {
-    setModal(null);
-  }, []);
-  const onShowSettings = useCallback(() => {
-    if (getSFXEnabled()) clickSfx.play();
-    setModal({ type: "settings" });
-  }, []);
-
-  if (modal === null) {
-  } else if (modal.type === "levelUp") {
-    modalComp = (
-      <LevelUpModal
-        level={modal.newLevel}
-        energy={modal.newEnergy}
-        isOpen={true}
-        onClose={onClose}
-      />
-    );
-  } else if (modal.type === "results") {
-    modalComp = (
-      <ResultsModal
-        isOpen={true}
-        onClose={() => setModal(modal.next)}
-        time={modal.time}
-        xp={modal.xp}
-        accuracy={modal.accuracy}
-      />
-    );
-  } else if (modal.type === "noEnergy") {
-    modalComp = <NoEnergyModal isOpen={true} onClose={onClose} />;
-  } else if (modal.type === "invalidBackup") {
-    modalComp = <InvalidBackupModal isOpen={true} onClose={onClose} />;
-  } else if (modal.type === "intro") {
-    modalComp = <IntroModal isOpen={true} onClose={onClose} />;
-  } else if (modal.type === "credits") {
-    modalComp = <CreditsModal isOpen={true} onClose={onClose} />;
-  } else if (modal.type === "settings") {
-    modalComp = (
-      <SettingsModal
-        isOpen={true}
-        onClose={onClose}
-        onShowCredits={() => setModal({ type: "credits" })}
-      />
-    );
-  }
   const playing = session && session.pending.length + session.failed.length;
-  const showingResults = !!(
-    session &&
-    modal &&
-    (modal.type === "results" || modal.type === "levelUp")
-  );
   const showXP = !player || player.lvl !== MAX_LEVEL;
-  const onPlay = useCallback(() => {
-    if (player === null) return;
-    if (player.energy >= PLAY_ENERGY_COST) {
-      startNewGame();
-    } else {
-      setModal({ type: "noEnergy" });
-    }
-  }, [player]);
 
   return (
     <>
-      {modalComp}
-      {playing || showingResults ? (
+      {playing || (session && forceSession) ? (
         <GameSession
           session={session}
+          setShowingResults={setForceSession}
           showXP={showXP}
-          showingResults={showingResults}
         />
       ) : (
-        player && (
-          <Home
-            player={player}
-            onShowSettings={onShowSettings}
-            onPlay={onPlay}
-          />
-        )
+        player && <Home player={player} onPlay={startNewGame} />
       )}
     </>
   );

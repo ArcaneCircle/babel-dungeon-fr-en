@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 
 import { _ } from "~/lib/i18n";
 import { importGame } from "~/lib/game";
@@ -15,12 +15,12 @@ import {
 
 import MenuPreference from "~/components/MenuPreference";
 import MenuButton from "~/components/MenuButton";
-import ConfirmModal from "./ConfirmModal";
+import ConfirmModal from "~/components/modals/ConfirmModal";
+import { ModalContext } from "~/components/modals/Modal";
 
 interface Props {
   onShowCredits: () => void;
-  onClose: () => void;
-  isOpen: boolean;
+  onImportBackupFailed: () => void;
   [key: string]: any;
 }
 
@@ -29,10 +29,11 @@ function MenuItem({ children }: { children: React.ReactNode }) {
 }
 
 export default function SettingsModal({
+  onImportBackupFailed,
   onShowCredits,
-  onClose,
   ...props
 }: Props) {
+  const { setOpen } = useContext(ModalContext);
   const [sfxEnabled, setSFX] = useState(getSFXEnabled());
   const [ttsEnabled, setTTS] = useState(getTTSEnabled());
   const [defaultMode, setModeState] = useState(getMode());
@@ -65,8 +66,13 @@ export default function SettingsModal({
     if (getShowIntro()) {
       const [file] = await window.webxdc.importFiles({ extensions: [ext] });
       const reader = new FileReader();
-      reader.onload = (e) =>
-        e.target && importGame(JSON.parse(e.target.result as string));
+      reader.onload = (e) => {
+        if (e.target) {
+          if (!importGame(JSON.parse(e.target.result as string))) {
+            onImportBackupFailed();
+          }
+        }
+      };
       reader.readAsText(file, "UTF-8");
     } else {
       const backup = await exportBackup();
@@ -77,7 +83,7 @@ export default function SettingsModal({
         },
       });
     }
-    onClose();
+    setOpen(false);
   };
 
   const sfxState = _(sfxEnabled ? "[ ON]" : "[OFF]");
@@ -85,7 +91,7 @@ export default function SettingsModal({
   const modeState = _(defaultMode ? "[EASY]" : "[HARD]");
 
   return (
-    <ConfirmModal onClose={onClose} {...props}>
+    <ConfirmModal {...props}>
       <div>
         <div style={{ marginBottom: "2em" }}>
           {_("SETTINGS")}

@@ -14,8 +14,6 @@ const PartyPopperStyled = () => (
 type Props = {
   level: number;
   energy: number;
-  onClose: () => void;
-  isOpen: boolean;
   [key: string]: any;
 };
 

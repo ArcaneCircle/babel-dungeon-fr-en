@@ -3,7 +3,6 @@ declare type Payload = { uid: string } & (
       cmd: "init";
       sessionHook: (session: Session | null) => void;
       playerHook: (player: Player) => void;
-      modalHook: (modal: ModalPayload | null) => void;
     }
   | {
       cmd: "mon-up";
@@ -89,24 +88,9 @@ declare type ModalPayload =
       newEnergy: number;
     }
   | {
-      type: "intro";
-    }
-  | {
-      type: "credits";
-    }
-  | {
-      type: "noEnergy";
-    }
-  | {
-      type: "invalidBackup";
-    }
-  | {
       type: "results";
       time: number;
       xp: number;
       accuracy: number;
       next: ModalPayload | null;
-    }
-  | {
-      type: "settings";
     };

@@ -1,11 +1,21 @@
+import { useState, useCallback } from "react";
 import PixelPlaySolid from "~icons/pixel/play-solid";
 import PixelCrownSolid from "~icons/pixel/crown-solid";
 import PixelFireSolid from "~icons/pixel/fire-solid";
 
-import { MAIN_COLOR, GOLDEN, RED, MAX_LEVEL } from "~/lib/constants";
+import {
+  MAIN_COLOR,
+  GOLDEN,
+  RED,
+  MAX_LEVEL,
+  PLAY_ENERGY_COST,
+} from "~/lib/constants";
 import { _ } from "~/lib/i18n";
-import { getLastPlayed } from "~/lib/storage";
+import { getLastPlayed, getShowIntro } from "~/lib/storage";
 
+import { ModalContext } from "~/components/modals/Modal";
+import NoEnergyModal from "~/components/modals/NoEnergyModal";
+import IntroModal from "~/components/modals/IntroModal";
 import PixelatedProgressBar from "~/components/PixelatedProgressBar";
 import StatSection from "~/components/StatSection";
 import TitleBar from "~/components/TitleBar";
@@ -22,10 +32,12 @@ const card = {
 interface Props {
   onPlay: () => void;
   player: Player;
-  onShowSettings: () => void;
 }
 
-export default function Home({ onPlay, player, onShowSettings }: Props) {
+export default function Home({ onPlay, player }: Props) {
+  const [modal, setModal] = useState(
+    (getShowIntro() ? "intro" : null) as "intro" | "noEnergy" | null,
+  );
   const today = new Date().setHours(0, 0, 0, 0);
   const lastPlayed = getLastPlayed();
   const epicStreak = player.streak >= 7;
@@ -49,9 +61,24 @@ export default function Home({ onPlay, player, onShowSettings }: Props) {
   const masteredProgress = maxMasteredRank ? 100 : player.mastered % 100;
   const masteredRankColor = maxMasteredRank ? MAIN_COLOR : undefined;
 
+  const onPlayClick = useCallback(() => {
+    if (player.energy >= PLAY_ENERGY_COST) {
+      onPlay();
+    } else {
+      setModal("noEnergy");
+    }
+  }, [player]);
+  const setOpen = useCallback(
+    (show: boolean) => (show ? setModal(modal) : setModal(null)),
+    [],
+  );
+
   return (
     <>
-      <TitleBar onShowSettings={onShowSettings} />
+      <ModalContext.Provider value={{ isOpen: !!modal, setOpen }}>
+        {modal === "intro" ? <IntroModal /> : <NoEnergyModal />}
+      </ModalContext.Provider>
+      <TitleBar />
       <div style={{ padding: "0.5em" }}>
         <div
           style={{
@@ -152,7 +179,7 @@ export default function Home({ onPlay, player, onShowSettings }: Props) {
             padding: "0.6em 0.5em",
             marginTop: "1em",
           }}
-          onClick={onPlay}
+          onClick={onPlayClick}
         >
           <PixelPlaySolid />
         </MenuButton>
