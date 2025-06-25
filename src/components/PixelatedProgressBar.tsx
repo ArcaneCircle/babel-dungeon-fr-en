@@ -20,18 +20,12 @@ interface Props {
   progress: number;
   total: number;
   color: string;
-  colorDiag1: string;
-  colorDiag2: string;
-  colorDiag3: string;
 }
 
 export default function PixelatedProgressBar({
   progress,
   total,
   color,
-  colorDiag1,
-  colorDiag2,
-  colorDiag3,
 }: Props) {
   const percentage = Math.round((progress / total) * 100);
   const progressStyle = {
@@ -40,9 +34,9 @@ export default function PixelatedProgressBar({
     background: color,
   };
   const d0 = { ...square, background: color };
-  const d1 = { ...square, background: colorDiag1 };
-  const d2 = { ...square, background: colorDiag2 };
-  const d3 = { ...square, background: colorDiag3 };
+  const d1 = { ...square, background: color + "f2" };
+  const d2 = { ...square, background: color + "d9" };
+  const d3 = { ...square, background: color + "4d" };
   const hide = percentage === 100 || progress === 0;
   const pixels = { minWidth: "15px", display: hide ? "none" : "inline-block" };
 

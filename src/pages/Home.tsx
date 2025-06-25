@@ -2,7 +2,7 @@ import PixelPlaySolid from "~icons/pixel/play-solid";
 import PixelCrownSolid from "~icons/pixel/crown-solid";
 import PixelFireSolid from "~icons/pixel/fire-solid";
 
-import { MAIN_COLOR, RED, MAX_LEVEL } from "~/lib/constants";
+import { MAIN_COLOR, GOLDEN, RED, MAX_LEVEL } from "~/lib/constants";
 import { _ } from "~/lib/lang";
 import { getLastPlayed } from "~/lib/storage";
 
@@ -30,7 +30,7 @@ export default function Home({ onPlay, player, onShowSettings }: Props) {
   const lastPlayed = getLastPlayed();
   const epicStreak = player.streak >= 7;
   const streakColor =
-    lastPlayed === today ? (epicStreak ? "#efb60e" : MAIN_COLOR) : "#a8a8a8";
+    lastPlayed === today ? (epicStreak ? GOLDEN : MAIN_COLOR) : "#a8a8a8";
   const streakSize = player.streak > 99 ? "0.9em" : undefined;
   const toReviewColor = player.toReview ? undefined : MAIN_COLOR;
   const energyColor = player.energy < 10 ? RED : undefined;
@@ -121,10 +121,7 @@ export default function Home({ onPlay, player, onShowSettings }: Props) {
             <PixelatedProgressBar
               progress={seenProgress}
               total={100}
-              color={"#92c81a"}
-              colorDiag1={"#7bc415"}
-              colorDiag2={"#74b215"}
-              colorDiag3={"#2c341c"}
+              color={MAIN_COLOR}
             />
           </div>
           <div style={{ paddingBottom: "0.5em" }}>
@@ -133,7 +130,7 @@ export default function Home({ onPlay, player, onShowSettings }: Props) {
               {masteredProgress}/100
               <span style={{ display: "inline", float: "right" }}>
                 <PixelCrownSolid
-                  style={{ color: "#efb60e", marginRight: "0.2em" }}
+                  style={{ color: GOLDEN, marginRight: "0.2em" }}
                 />
                 <span style={{ color: masteredRankColor }}>
                   {Math.floor(player.mastered / 100)}
@@ -143,10 +140,7 @@ export default function Home({ onPlay, player, onShowSettings }: Props) {
             <PixelatedProgressBar
               progress={masteredProgress}
               total={100}
-              color={"#efb60e"}
-              colorDiag1={"#e3ad0e"}
-              colorDiag2={"#d09f0d"}
-              colorDiag3={"#423204"}
+              color={GOLDEN}
             />
           </div>
         </div>

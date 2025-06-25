@@ -2,7 +2,7 @@ import PixelThumbsupSolid from "~icons/pixel/thumbsup-solid";
 import PixelThumbsdownSolid from "~icons/pixel/thumbsdown-solid";
 import PixelFaceThinkingSolid from "~icons/pixel/face-thinking-solid";
 
-import { MAIN_COLOR, RED } from "~/lib/constants";
+import { MAIN_COLOR, RED, GOLDEN } from "~/lib/constants";
 import { _ } from "~/lib/lang";
 
 import BasicProgressBar from "./BasicProgressBar";
@@ -48,7 +48,7 @@ export default function StatusBar({ showXP, session, ...props }: Props) {
         </AlignedSpan>
         <AlignedSpan>
           <PixelFaceThinkingSolid
-            style={{ color: "#efb60e", marginRight: "0.2em" }}
+            style={{ color: GOLDEN, marginRight: "0.2em" }}
           />
           {session.pending.length}
         </AlignedSpan>
