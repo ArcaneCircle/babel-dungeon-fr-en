@@ -8,11 +8,11 @@ import PixelSparklesSolid from "~icons/pixel/sparkles-solid";
 import { MAIN_COLOR, GOLDEN } from "~/lib/constants";
 import { _ } from "~/lib/i18n";
 import { getLastPlayed, getShowIntro } from "~/lib/storage";
-import { startNewGame, getPlayEnergyCost } from "~/lib/game";
 
 import { ModalContext } from "~/components/modals/Modal";
 import NoEnergyModal from "~/components/modals/NoEnergyModal";
 import IntroModal from "~/components/modals/IntroModal";
+import GameModeModal from "~/components/modals/GameModeModal";
 import PixelatedProgressBar from "~/components/PixelatedProgressBar";
 import StatSection from "~/components/StatSection";
 import TitleBar from "~/components/TitleBar";
@@ -33,7 +33,7 @@ interface Props {
 
 export default function Home({ player, showXP }: Props) {
   const [modal, setModal] = useState(
-    (getShowIntro() ? "intro" : null) as "intro" | "noEnergy" | null,
+    (getShowIntro() ? "intro" : null) as "intro" | "noEnergy" | "play" | null,
   );
   const today = new Date().setHours(0, 0, 0, 0);
   const lastPlayed = getLastPlayed();
@@ -52,22 +52,27 @@ export default function Home({ player, showXP }: Props) {
   const masteredProgress = maxMasteredRank ? 100 : player.mastered % 100;
   const masteredRankColor = maxMasteredRank ? MAIN_COLOR : undefined;
 
-  const onPlay = useCallback(() => {
-    if (player.energy >= getPlayEnergyCost()) {
-      startNewGame();
-    } else {
-      setModal("noEnergy");
-    }
-  }, [player]);
+  const onPlay = useCallback(() => setModal("play"), []);
   const setOpen = useCallback(
     (show: boolean) => (show ? setModal(modal) : setModal(null)),
     [modal],
   );
+  const onNoEnergy = useCallback(() => setModal("noEnergy"), []);
 
   return (
     <>
       <ModalContext.Provider value={{ isOpen: !!modal, setOpen }}>
-        {modal === "intro" ? <IntroModal /> : <NoEnergyModal />}
+        {modal === "intro" ? (
+          <IntroModal />
+        ) : modal === "noEnergy" ? (
+          <NoEnergyModal />
+        ) : modal === "play" ? (
+          <GameModeModal
+            player={player}
+            onNoEnergy={onNoEnergy}
+            style={{ minWidth: "60vw" }}
+          />
+        ) : null}
       </ModalContext.Provider>
       <TitleBar />
       <div style={{ padding: "0.5em" }}>

@@ -4,7 +4,7 @@ import PixelThumbsdownSolid from "~icons/pixel/thumbsdown-solid";
 
 import { MAIN_COLOR, RED } from "~/lib/constants";
 import { _ } from "~/lib/i18n";
-import { getMode, getTTSEnabled, getSFXEnabled } from "~/lib/storage";
+import { getTTSEnabled, getSFXEnabled } from "~/lib/storage";
 import { successSfx, errorSfx, clickSfx } from "~/lib/sounds";
 import { getCard, sendMonsterUpdate } from "~/lib/game";
 import { tts } from "~/lib/tts";
@@ -65,7 +65,7 @@ function Quiz({
   const [show, setShow] = useState(false);
   const [modal, setModal] = useState(null as ModalPayload | null);
 
-  const defaultMode = getMode();
+  const defaultMode = session.mode === "easy";
   const ttsEnabled = getTTSEnabled();
   const sfxEnabled = getSFXEnabled();
   const { sentence, meanings } = getCard(monster.id);

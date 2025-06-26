@@ -18,7 +18,7 @@ declare type Payload = { uid: string } & (
       cmd: "new";
       energy: number;
       time: number;
-      mode: boolean;
+      mode: GameMode;
     }
   | {
       cmd: "import";
@@ -41,6 +41,7 @@ declare interface Card {
 
 declare interface Session {
   start: number;
+  mode: GameMode;
   xp: number;
   failedIds: number[];
   correct: Monster[];
@@ -69,7 +70,6 @@ declare interface Backup {
   monsters: Monster[];
   session: string;
   unseenIndex: string;
-  mode: string;
   streak: string;
   level: string;
   xp: string;
@@ -80,6 +80,8 @@ declare interface Backup {
   sfx: string;
   tts: string;
 }
+
+declare type GameMode = "easy" | "hard";
 
 declare type ModalPayload =
   | {

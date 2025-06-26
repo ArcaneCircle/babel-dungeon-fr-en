@@ -7,8 +7,6 @@ import {
   setSFXEnabled,
   getTTSEnabled,
   setTTSEnabled,
-  getMode,
-  setMode,
   getShowIntro,
   exportBackup,
 } from "~/lib/storage";
@@ -36,7 +34,6 @@ export default function SettingsModal({
   const { setOpen } = useContext(ModalContext);
   const [sfxEnabled, setSFX] = useState(getSFXEnabled());
   const [ttsEnabled, setTTS] = useState(getTTSEnabled());
-  const [defaultMode, setModeState] = useState(getMode());
 
   const toggleSFX = () => {
     setSFX((enabled) => {
@@ -50,13 +47,6 @@ export default function SettingsModal({
       enabled = !enabled;
       setTTSEnabled(enabled);
       return enabled;
-    });
-  };
-  const toggleMode = () => {
-    setModeState((mode) => {
-      mode = !mode;
-      setMode(mode);
-      return mode;
     });
   };
 
@@ -88,7 +78,6 @@ export default function SettingsModal({
 
   const sfxState = _(sfxEnabled ? "[ ON]" : "[OFF]");
   const ttsState = _(ttsEnabled ? "[ ON]" : "[OFF]");
-  const modeState = _(defaultMode ? "[EASY]" : "[HARD]");
 
   return (
     <ConfirmModal {...props}>
@@ -109,13 +98,6 @@ export default function SettingsModal({
             name={_("TTS")}
             state={ttsState}
             onClick={toggleTTS}
-          />
-        </MenuItem>
-        <MenuItem>
-          <MenuPreference
-            name={_("Mode")}
-            state={modeState}
-            onClick={toggleMode}
           />
         </MenuItem>
         <MenuItem>

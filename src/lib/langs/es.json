@@ -12,6 +12,10 @@
   "REVIEW:": "REPASAR:",
   "Discovered:": "Descubierto:",
   "Mastered:": "Dominado:",
+  "GAME MODE": "MODO DE JUEGO",
+  "Easy": "Fácil",
+  "Hard": "Difícil",
+  "Cancel": "Cancelar",
 
   "+{{x}}xp": "+{{x}}xp",
   "lvl.{{l}}": "lvl.{{l}}",
@@ -37,7 +41,7 @@
   "+{{x}} max. energy": "+{{x}} energía max.",
 
   "LOW ENERGY!": "¡ENERGÍA BAJA!",
-  "Your energy is too low. You need at least {{e}} points to play.": "Tienes muy poca energía. Necesitas al menos {{e}} puntos para jugar.",
+  "Your energy is too low.": "Tienes muy poca energía.",
   "You will recover energy over time. Take a break and come back later!": "Recuperarás energía con el tiempo. ¡Descansa y vuelve más tarde!",
 
   "ROUND COMPLETED!": "¡RONDA COMPLETADA!",
@@ -48,14 +52,11 @@
   "SETTINGS": "AJUSTES",
   "SFX": "SFX",
   "TTS": "TTS",
-  "Mode": "Modo",
   "Import Backup": "Importar Backup",
   "Export Backup": "Exportar Backup",
   "Credits": "Créditos",
   "[ ON]": "[SI]",
   "[OFF]": "[NO]",
-  "[EASY]": "[  FÁCIL]",
-  "[HARD]": "[DIFÍCIL]",
 
   "ERROR": "ERROR",
   "Can't import backup, it is not compatible with your version of the game": "No se puede importar la copia de respaldo; no es compatible con tu versión del juego"

@@ -8,13 +8,19 @@ import { Modal } from "~/components/modals/Modal";
 import MenuButton from "~/components/MenuButton";
 
 type Props = {
+  buttonText?: string;
   children: React.ReactNode;
+  [key: string]: any;
 };
 
-export default function ConfirmModal({ children }: Props) {
+export default function ConfirmModal({
+  buttonText,
+  children,
+  ...props
+}: Props) {
   const { setOpen } = useContext(ModalContext);
   return (
-    <Modal>
+    <Modal {...props}>
       <div>{children}</div>
       <MenuButton
         style={{
@@ -24,7 +30,7 @@ export default function ConfirmModal({ children }: Props) {
         }}
         onClick={() => setOpen(false)}
       >
-        {_("Continue")}
+        {buttonText || _("Continue")}
       </MenuButton>
     </Modal>
   );

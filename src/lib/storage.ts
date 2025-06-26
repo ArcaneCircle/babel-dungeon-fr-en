@@ -20,7 +20,6 @@ export async function exportBackup(): Promise<Backup> {
     monsters,
     session: localStorage.session,
     unseenIndex: localStorage.unseenIndex,
-    mode: localStorage.mode,
     // Player
     streak: localStorage.streak,
     level: localStorage.level,
@@ -44,7 +43,6 @@ export async function importBackup(backup: Backup) {
   localStorage.showIntro = backup.showIntro;
   localStorage.session = backup.session || "";
   localStorage.unseenIndex = backup.unseenIndex;
-  localStorage.mode = backup.mode;
   // Player
   localStorage.streak = backup.streak;
   localStorage.level = backup.level;
@@ -105,14 +103,6 @@ export function getTTSEnabled(): boolean {
 
 export function setTTSEnabled(enabled: boolean) {
   localStorage.tts = enabled ? 1 : 0;
-}
-
-export function getMode(): boolean {
-  return parseInt(localStorage.mode || "1") === 1;
-}
-
-export function setMode(mode: boolean) {
-  localStorage.mode = mode ? 1 : 0;
 }
 
 export function getUnseenIndex(): number {
