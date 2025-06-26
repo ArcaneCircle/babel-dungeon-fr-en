@@ -28,7 +28,7 @@ export default function App() {
           showXP={showXP}
         />
       ) : (
-        player && <Home player={player} showXP={showXP} />
+        player && <Home player={player} />
       )}
     </>
   );

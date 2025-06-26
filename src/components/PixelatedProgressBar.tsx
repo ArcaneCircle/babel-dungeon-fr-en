@@ -2,9 +2,11 @@ const container = {
   display: "flex",
   flexDirection: "row" as "row",
   flexWrap: "nowrap" as "nowrap",
-  overflowY: "hidden" as "hidden",
+  overflow: "hidden" as "hidden",
+  alignItems: "center",
   border: "2px solid #464646",
   borderRadius: "5px",
+  position: "relative" as "relative",
 };
 const row = {
   height: "5px",
@@ -19,6 +21,7 @@ interface Props {
   progress: number;
   total: number;
   color: string;
+  label?: string;
   lite?: boolean;
 }
 
@@ -27,8 +30,19 @@ export default function PixelatedProgressBar({
   total,
   color,
   lite,
+  label,
 }: Props) {
   const height = lite ? "15px" : "20px";
+  const labelStyle = {
+    display: "flex",
+    alignItems: "center",
+    flexWrap: "nowrap" as "nowrap",
+    textWrap: "nowrap" as "nowrap",
+    position: "absolute" as "absolute",
+    fontSize: lite ? "10px" : "12px",
+    paddingLeft: "5px",
+    textShadow: "1px 1px 1px black",
+  };
   progress = Math.min(progress, total);
   const percentage = Math.round((progress / total) * 100);
   const progressStyle = {
@@ -45,6 +59,7 @@ export default function PixelatedProgressBar({
 
   return (
     <div style={{ ...container, height }}>
+      {label && <div style={labelStyle}>{label}</div>}
       <div style={progressStyle}></div>
       <div style={pixels}>
         <div style={row}>
