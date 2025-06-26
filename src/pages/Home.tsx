@@ -153,7 +153,7 @@ export default function Home({ player }: Props) {
             />
           </div>
           <div style={{ paddingBottom: "0.5em" }}>
-            <div style={{ paddingBottom: "0.2em" }}>
+            <div style={{ paddingBottom: "0.3em" }}>
               {_("Mastered:")}
               <span style={{ display: "inline", float: "right" }}>
                 <PixelCrownSolid
