@@ -1,6 +1,7 @@
 import PixelThumbsupSolid from "~icons/pixel/thumbsup-solid";
 import PixelThumbsdownSolid from "~icons/pixel/thumbsdown-solid";
 import PixelFaceThinkingSolid from "~icons/pixel/face-thinking-solid";
+import PixelSparklesSolid from "~icons/pixel/sparkles-solid";
 
 import { MAIN_COLOR, RED, GOLDEN } from "~/lib/constants";
 import { _ } from "~/lib/i18n";
@@ -33,7 +34,8 @@ export default function StatusBar({ showXP, session, ...props }: Props) {
       >
         {showXP && (
           <AlignedSpan>
-            {_("+{{x}}xp").replace("{{x}}", String(session.xp))}
+            +{session.xp}
+            <PixelSparklesSolid />
           </AlignedSpan>
         )}
         <AlignedSpan>
