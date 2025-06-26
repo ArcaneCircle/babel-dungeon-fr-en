@@ -61,7 +61,7 @@ export default function Home({ player, showXP }: Props) {
   }, [player]);
   const setOpen = useCallback(
     (show: boolean) => (show ? setModal(modal) : setModal(null)),
-    [],
+    [modal],
   );
 
   return (

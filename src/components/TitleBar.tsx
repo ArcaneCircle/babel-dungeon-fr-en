@@ -32,7 +32,7 @@ export default function TitleBar() {
   }, []);
   const setOpen = useCallback(
     (show: boolean) => (show ? setModal(modal) : setModal(null)),
-    [],
+    [modal],
   );
 
   return (
