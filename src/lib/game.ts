@@ -112,8 +112,12 @@ export function importGame(backup: Backup): boolean {
   return false;
 }
 
+export function getPlayEnergyCost(): number {
+  return getMode() ? PLAY_ENERGY_COST : PLAY_ENERGY_COST / 2;
+}
+
 export function startNewGame() {
-  const energy = getEnergy().energy - PLAY_ENERGY_COST;
+  const energy = getEnergy().energy - getPlayEnergyCost();
   if (energy < 0) return;
 
   const uid = window.webxdc.selfAddr;

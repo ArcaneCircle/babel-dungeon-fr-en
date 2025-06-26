@@ -5,10 +5,10 @@ import PixelFireSolid from "~icons/pixel/fire-solid";
 import PixelBoltSolid from "~icons/pixel/bolt-solid";
 import PixelSparklesSolid from "~icons/pixel/sparkles-solid";
 
-import { MAIN_COLOR, GOLDEN, PLAY_ENERGY_COST } from "~/lib/constants";
+import { MAIN_COLOR, GOLDEN } from "~/lib/constants";
 import { _ } from "~/lib/i18n";
 import { getLastPlayed, getShowIntro } from "~/lib/storage";
-import { startNewGame } from "~/lib/game";
+import { startNewGame, getPlayEnergyCost } from "~/lib/game";
 
 import { ModalContext } from "~/components/modals/Modal";
 import NoEnergyModal from "~/components/modals/NoEnergyModal";
@@ -42,7 +42,8 @@ export default function Home({ player, showXP }: Props) {
     lastPlayed === today ? (epicStreak ? GOLDEN : MAIN_COLOR) : "#a8a8a8";
   const streakSize = player.streak > 999 ? "0.9em" : undefined;
   const toReviewColor = player.toReview ? undefined : MAIN_COLOR;
-  const energyColor = player.energy < PLAY_ENERGY_COST ? "#da4f2f" : "#ffef00";
+  const energyColor =
+    player.energy < getPlayEnergyCost() ? "#da4f2f" : "#ffef00";
 
   const maxSeenRank = player.seen === player.total;
   const seenProgress = maxSeenRank ? 100 : player.seen % 100;
@@ -52,7 +53,7 @@ export default function Home({ player, showXP }: Props) {
   const masteredRankColor = maxMasteredRank ? MAIN_COLOR : undefined;
 
   const onPlay = useCallback(() => {
-    if (player.energy >= PLAY_ENERGY_COST) {
+    if (player.energy >= getPlayEnergyCost()) {
       startNewGame();
     } else {
       setModal("noEnergy");

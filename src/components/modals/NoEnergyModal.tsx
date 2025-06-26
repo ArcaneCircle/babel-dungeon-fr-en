@@ -1,4 +1,4 @@
-import { PLAY_ENERGY_COST } from "~/lib/constants";
+import { getPlayEnergyCost } from "~/lib/game";
 import { _ } from "~/lib/i18n";
 
 import ConfirmModal from "./ConfirmModal";
@@ -18,7 +18,7 @@ export default function NoEnergyModal(props: Props) {
         <p>
           {_(
             "Your energy is too low. You need at least {{e}} points to play.",
-          ).replace("{{e}}", String(PLAY_ENERGY_COST))}
+          ).replace("{{e}}", String(getPlayEnergyCost()))}
         </p>
         <p>
           {_(
